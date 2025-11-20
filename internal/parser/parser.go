@@ -31,10 +31,7 @@ func (p *Parser) nextToken() {
 
 // Parse parses the input starting from the root and returns the root Node.
 func (p *Parser) Parse() (Node, error) {
-	if p.curToken.Type != lexer.LBRACE {
-		return nil, fmt.Errorf("expected '{', got %s at line %d, column %d", p.curToken.Type, p.curToken.Line, p.curToken.Column)
-	}
-	return p.parseObject()
+	return p.parseValue()
 }
 
 // parseObject parses an object and returns an ObjectValue node.
