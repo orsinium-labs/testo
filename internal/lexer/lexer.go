@@ -176,8 +176,16 @@ func lookupKeyword(ident string) TokenType {
 		return TRUE
 	case "false":
 		return FALSE
-	case "null":
+	case "null", "nil", "none":
 		return NULL
+	case "any":
+		return TYPE_ANY
+	case "string", "str":
+		return TYPE_STRING
+	case "int", "integer":
+		return TYPE_INT
+	case "bool", "boolean":
+		return TYPE_BOOL
 	default:
 		return ILLEGAL
 	}

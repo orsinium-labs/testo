@@ -8,19 +8,24 @@ const (
 	ILLEGAL TokenType = "ILLEGAL" // Represents an invalid or unrecognized token
 	EOF     TokenType = "EOF"     // End of input
 
-	LBRACE   TokenType = "{" // Left brace
-	RBRACE   TokenType = "}" // Right brace
-	LBRACKET TokenType = "[" // Left bracket
-	RBRACKET TokenType = "]" // Right bracket
-	COLON    TokenType = ":" // Colon
-	COMMA    TokenType = "," // Comma
+	LBRACE   TokenType = "{"
+	RBRACE   TokenType = "}"
+	LBRACKET TokenType = "["
+	RBRACKET TokenType = "]"
+	COLON    TokenType = ":"
+	COMMA    TokenType = ","
 
-	STRING TokenType = "STRING" // String literal
-	NUMBER TokenType = "NUMBER" // Numeric literal
+	STRING TokenType = "STRING"
+	NUMBER TokenType = "NUMBER"
 
-	TRUE  TokenType = "TRUE"  // Boolean literal: true
-	FALSE TokenType = "FALSE" // Boolean literal: false
-	NULL  TokenType = "NULL"  // Null literal
+	TRUE  TokenType = "TRUE"
+	FALSE TokenType = "FALSE"
+	NULL  TokenType = "NULL"
+
+	TYPE_ANY    TokenType = "MATCH_ANY"
+	TYPE_STRING TokenType = "MATCH_STRING"
+	TYPE_BOOL   TokenType = "MATCH_BOOL"
+	TYPE_INT    TokenType = "MATCH_INT"
 )
 
 // Token represents a single lexical token with its type, literal value, and position in the input.

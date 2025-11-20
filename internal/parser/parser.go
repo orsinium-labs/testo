@@ -134,6 +134,22 @@ func (p *Parser) parseValue() (valdo.Validator, error) {
 		return p.parseObject()
 	case lexer.LBRACKET:
 		return p.parseArray()
+	case lexer.TYPE_ANY:
+		value := valdo.Any()
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_STRING:
+		value := valdo.String()
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_INT:
+		value := valdo.Int()
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_BOOL:
+		value := valdo.Bool()
+		p.nextToken()
+		return value, nil
 	default:
 		return nil, fmt.Errorf("unexpected token %s at line %d, column %d", p.curToken.Type, p.curToken.Line, p.curToken.Column)
 	}

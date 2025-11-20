@@ -43,7 +43,7 @@ func TestIdentity(t *testing.T) {
 func TestBadJson(t *testing.T) {
 	inputs := []string{
 		`True`,
-		`nil`,
+		`None`,
 		// `1.2.3`,
 		`!`,
 		`{`,
@@ -63,6 +63,25 @@ func TestBadJson(t *testing.T) {
 		_, err := parser.Parse(input)
 		if err == nil {
 			t.Fatalf("expected error in `%s`", input)
+		}
+	}
+}
+
+func TestValidateType_Ok(t *testing.T) {
+	inputs := []struct{ given, expected string }{
+		{`true`, `bool`},
+		{`false`, `bool`},
+		{`13`, `int`},
+		{`13`, `integer`},
+		{`-13`, `integer`},
+		{`"hi"`, `string`},
+		{`"hi"`, `str`},
+		{`"hi"`, `string`},
+	}
+	for _, input := range inputs {
+		err := validate(input.given, input.expected)
+		if err != nil {
+			t.Fatalf("unexpected error in `%s`: %v", input, err)
 		}
 	}
 }
