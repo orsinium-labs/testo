@@ -60,7 +60,7 @@ func findKeyStart(data []byte, key string) (int, error) {
 	}
 	var stackbuf [unescapeStackBufSize]byte // stack-allocated array for allocation-free unescaping of small strings
 
-	if ku, err := Unescape(StringToBytes(key), stackbuf[:]); err == nil {
+	if ku, err := Unescape(stringToBytes(key), stackbuf[:]); err == nil {
 		key = bytesToString(&ku)
 	}
 
@@ -1024,7 +1024,7 @@ func ArrayEach(data []byte, cb func(value []byte, dataType ValueType, offset int
 		return offset, nil
 	}
 
-	for true {
+	for {
 		v, t, o, e := Get(data[offset:])
 
 		if e != nil {
