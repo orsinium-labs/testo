@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/orsinium-labs/testo/internal/lexer"
+	"github.com/orsinium-labs/valdo/valdo"
 )
 
 // Parser is responsible for parsing tokens into a structured format.
@@ -29,21 +30,21 @@ func (p *Parser) nextToken() {
 	p.peekToken = p.l.NextToken()
 }
 
-// Parse parses the input starting from the root and returns the root Node.
-func (p *Parser) Parse() (Node, error) {
+// Parse parses the input starting from the root and returns the root valdo.Validator.
+func (p *Parser) Parse() (valdo.Validator, error) {
 	return p.parseValue()
 }
 
 // parseObject parses an object and returns an ObjectValue node.
-func (p *Parser) parseObject() (*Object, error) {
-	object := &Object{Pairs: make(map[string]Node)}
+func (p *Parser) parseObject() (valdo.Validator, error) {
+	props := make([]valdo.PropertyType, 0)
 
 	p.nextToken()
 
 	// Handle an empty object
 	if p.curToken.Type == lexer.RBRACE {
 		p.nextToken()
-		return object, nil
+		return valdo.O(), nil
 	}
 
 	// Parse object contents.
@@ -63,11 +64,10 @@ func (p *Parser) parseObject() (*Object, error) {
 			return nil, err
 		}
 
-		object.Pairs[key] = value
-
+		props = append(props, valdo.P(key, value))
 		if p.curToken.Type == lexer.RBRACE {
 			p.nextToken()
-			return object, nil
+			return valdo.O(props...), nil
 		}
 
 		if p.curToken.Type != lexer.COMMA {
@@ -90,10 +90,10 @@ func (p *Parser) parseKey() (string, error) {
 }
 
 // parseValue parses a value in an object or array and returns a Value node.
-func (p *Parser) parseValue() (Node, error) {
+func (p *Parser) parseValue() (valdo.Validator, error) {
 	switch p.curToken.Type {
 	case lexer.STRING:
-		value := &String{Value: p.curToken.Literal}
+		value := valdo.Const(p.curToken.Literal)
 		p.nextToken()
 		return value, nil
 	case lexer.NUMBER:
@@ -102,19 +102,20 @@ func (p *Parser) parseValue() (Node, error) {
 		if err != nil {
 			return nil, fmt.Errorf("could not parse number: %v", err)
 		}
-		value := &Number{numValue}
+		// TODO: support float.
+		value := valdo.IntConst(int(numValue))
 		p.nextToken()
 		return value, nil
 	case lexer.TRUE:
-		value := &Boolean{true}
+		value := valdo.BoolConst(true)
 		p.nextToken()
 		return value, nil
 	case lexer.FALSE:
-		value := &Boolean{false}
+		value := valdo.BoolConst(false)
 		p.nextToken()
 		return value, nil
 	case lexer.NULL:
-		value := &Null{}
+		value := valdo.Null()
 		p.nextToken()
 		return value, nil
 	case lexer.LBRACE:
@@ -126,16 +127,15 @@ func (p *Parser) parseValue() (Node, error) {
 	}
 }
 
-// parseArray parses an array and returns an ArrayValue node.
-func (p *Parser) parseArray() (*Array, error) {
-	array := &Array{Elements: []Node{}}
+func (p *Parser) parseArray() (valdo.Validator, error) {
+	items := make([]valdo.Validator, 0)
 
 	p.nextToken()
 
 	// Handle an empty array.
 	if p.curToken.Type == lexer.RBRACKET {
 		p.nextToken()
-		return array, nil
+		return valdo.T(), nil
 	}
 
 	for {
@@ -143,11 +143,11 @@ func (p *Parser) parseArray() (*Array, error) {
 		if err != nil {
 			return nil, err
 		}
-		array.Elements = append(array.Elements, value)
+		items = append(items, value)
 
 		if p.curToken.Type == lexer.RBRACKET {
 			p.nextToken()
-			return array, nil
+			return valdo.T(items...), nil
 		}
 
 		if p.curToken.Type != lexer.COMMA {
