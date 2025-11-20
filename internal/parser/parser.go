@@ -150,6 +150,14 @@ func (p *Parser) parseValue() (valdo.Validator, error) {
 		value := valdo.Bool()
 		p.nextToken()
 		return value, nil
+	case lexer.TYPE_OBJECT:
+		value := valdo.Map(valdo.Any())
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_ARRAY:
+		value := valdo.Array(valdo.Any())
+		p.nextToken()
+		return value, nil
 	default:
 		return nil, fmt.Errorf("unexpected token %s at line %d, column %d", p.curToken.Type, p.curToken.Line, p.curToken.Column)
 	}

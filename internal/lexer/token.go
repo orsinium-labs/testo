@@ -26,6 +26,8 @@ const (
 	TYPE_STRING TokenType = "MATCH_STRING"
 	TYPE_BOOL   TokenType = "MATCH_BOOL"
 	TYPE_INT    TokenType = "MATCH_INT"
+	TYPE_OBJECT TokenType = "MATCH_OBJECT"
+	TYPE_ARRAY  TokenType = "MATCH_ARRAY"
 )
 
 // Token represents a single lexical token with its type, literal value, and position in the input.

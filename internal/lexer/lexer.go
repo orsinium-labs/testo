@@ -186,6 +186,10 @@ func lookupKeyword(ident string) TokenType {
 		return TYPE_INT
 	case "bool", "boolean":
 		return TYPE_BOOL
+	case "obj", "object", "struct", "map":
+		return TYPE_OBJECT
+	case "arr", "array", "slice", "list":
+		return TYPE_ARRAY
 	default:
 		return ILLEGAL
 	}

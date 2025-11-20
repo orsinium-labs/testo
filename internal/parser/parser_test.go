@@ -29,6 +29,7 @@ func TestIdentity(t *testing.T) {
 		`[1, 2, 3]`,
 		`[1, null, false, "hello"]`,
 		`{}`,
+		`{"data": {"attributes": {"name": "aragorn"}}}`,
 		`{"name": "aragorn"}`,
 		`{"name": "aragorn", "age": 82}`,
 	}
@@ -71,12 +72,28 @@ func TestValidateType_Ok(t *testing.T) {
 	inputs := []struct{ given, expected string }{
 		{`true`, `bool`},
 		{`false`, `bool`},
+
 		{`13`, `int`},
 		{`13`, `integer`},
 		{`-13`, `integer`},
+
 		{`"hi"`, `string`},
 		{`"hi"`, `str`},
-		{`"hi"`, `string`},
+		{`""`, `string`},
+
+		{`[]`, `array`},
+		{`[]`, `slice`},
+		{`[1]`, `array`},
+
+		{`{}`, `object`},
+		{`{}`, `struct`},
+		{`{"hi": 123}`, `object`},
+
+		{`"sup"`, `any`},
+		{`123`, `any`},
+		{`123.4`, `any`},
+		{`[]`, `any`},
+		{`{}`, `any`},
 	}
 	for _, input := range inputs {
 		err := validate(input.given, input.expected)
