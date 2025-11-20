@@ -3,7 +3,7 @@ package parser
 import (
 	"testing"
 
-	"github.com/letsmakecakes/jsonparser/internal/lexer"
+	"github.com/orsinium-labs/testo/internal/lexer"
 )
 
 func TestParser(t *testing.T) {
@@ -17,14 +17,14 @@ func TestParser(t *testing.T) {
 			name:     "Empty Object",
 			input:    "{}",
 			hasError: false,
-			expected: &ObjectValue{Pairs: map[string]Value{}},
+			expected: &Object{Pairs: map[string]Node{}},
 		},
 		{
 			name:     "Simple Key-Value Pair",
 			input:    `{"key": "value"}`,
 			hasError: false,
-			expected: &ObjectValue{Pairs: map[string]Value{
-				"key": &StringValue{Value: "value"},
+			expected: &Object{Pairs: map[string]Node{
+				"key": &String{Value: "value"},
 			}},
 		},
 		{
@@ -35,15 +35,15 @@ func TestParser(t *testing.T) {
                 "nested": {"key": ["value", 123, true, null]}
             }`,
 			hasError: false,
-			expected: &ObjectValue{Pairs: map[string]Value{
-				"object": &ObjectValue{Pairs: map[string]Value{}},
-				"array":  &ArrayValue{Elements: []Value{}},
-				"nested": &ObjectValue{Pairs: map[string]Value{
-					"key": &ArrayValue{Elements: []Value{
-						&StringValue{Value: "value"},
-						&NumberValue{Value: 123},
-						&BooleanValue{Value: true},
-						&NullValue{},
+			expected: &Object{Pairs: map[string]Node{
+				"object": &Object{Pairs: map[string]Node{}},
+				"array":  &Array{Elements: []Node{}},
+				"nested": &Object{Pairs: map[string]Node{
+					"key": &Array{Elements: []Node{
+						&String{Value: "value"},
+						&Number{Value: 123},
+						&Boolean{Value: true},
+						&Null{},
 					}},
 				}},
 			}},
@@ -72,8 +72,8 @@ func TestParser(t *testing.T) {
 			name:     "Valid Key-Value Pair",
 			input:    `{"key": "value"}`,
 			hasError: false,
-			expected: &ObjectValue{Pairs: map[string]Value{
-				"key": &StringValue{Value: "value"},
+			expected: &Object{Pairs: map[string]Node{
+				"key": &String{Value: "value"},
 			}},
 		},
 	}
@@ -102,8 +102,8 @@ func TestParser(t *testing.T) {
 // compareNodes is a helper function to compare two AST nodes for equality.
 func compareNodes(node1, node2 Node) bool {
 	switch n1 := node1.(type) {
-	case *ObjectValue:
-		n2, ok := node2.(*ObjectValue)
+	case *Object:
+		n2, ok := node2.(*Object)
 		if !ok {
 			return false
 		}
@@ -117,8 +117,8 @@ func compareNodes(node1, node2 Node) bool {
 			}
 		}
 		return true
-	case *ArrayValue:
-		n2, ok := node2.(*ArrayValue)
+	case *Array:
+		n2, ok := node2.(*Array)
 		if !ok {
 			return false
 		}
@@ -131,17 +131,17 @@ func compareNodes(node1, node2 Node) bool {
 			}
 		}
 		return true
-	case *StringValue:
-		n2, ok := node2.(*StringValue)
+	case *String:
+		n2, ok := node2.(*String)
 		return ok && n1.Value == n2.Value
-	case *NumberValue:
-		n2, ok := node2.(*NumberValue)
+	case *Number:
+		n2, ok := node2.(*Number)
 		return ok && n1.Value == n2.Value
-	case *BooleanValue:
-		n2, ok := node2.(*BooleanValue)
+	case *Boolean:
+		n2, ok := node2.(*Boolean)
 		return ok && n1.Value == n2.Value
-	case *NullValue:
-		_, ok := node2.(*NullValue)
+	case *Null:
+		_, ok := node2.(*Null)
 		return ok
 	default:
 		return false

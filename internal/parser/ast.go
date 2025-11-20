@@ -5,72 +5,54 @@ type Node interface {
 	TokenLiteral() string
 }
 
-// Value represents a value node in the AST.
-type Value interface {
-	Node
-	valueNode()
+// Object represents an object value with key-value pairs.
+type Object struct {
+	Pairs map[string]Node
 }
 
-// ObjectValue represents an object value with key-value pairs.
-type ObjectValue struct {
-	Pairs map[string]Value
-}
-
-func (o *ObjectValue) TokenLiteral() string {
+func (o *Object) TokenLiteral() string {
 	return "{"
 }
 
-func (o *ObjectValue) valueNode() {}
-
-// ArrayValue represents an array value with elements.
-type ArrayValue struct {
-	Elements []Value
+// Array represents an array value with elements.
+type Array struct {
+	Elements []Node
 }
 
-func (a *ArrayValue) TokenLiteral() string {
+func (a *Array) TokenLiteral() string {
 	return "["
 }
 
-func (a *ArrayValue) valueNode() {}
-
-// StringValue represents a string value.
-type StringValue struct {
+// String represents a string value.
+type String struct {
 	Value string
 }
 
-func (s *StringValue) TokenLiteral() string {
+func (s *String) TokenLiteral() string {
 	return s.Value
 }
 
-func (s *StringValue) valueNode() {}
-
-// NumberValue represents a number value.
-type NumberValue struct {
+// Number represents a number value.
+type Number struct {
 	Value float64
 }
 
-func (n *NumberValue) TokenLiteral() string {
+func (n *Number) TokenLiteral() string {
 	return "number"
 }
 
-func (n *NumberValue) valueNode() {}
-
-// BooleanValue represents a boolean value.
-type BooleanValue struct {
+// Boolean represents a boolean value.
+type Boolean struct {
 	Value bool
 }
 
-func (b *BooleanValue) TokenLiteral() string {
+func (b *Boolean) TokenLiteral() string {
 	return "boolean"
 }
 
-func (b *BooleanValue) valueNode() {}
+// Null represents a null value.
+type Null struct{}
 
-// NullValue represents a null value.
-type NullValue struct{}
-
-func (n *NullValue) TokenLiteral() string {
+func (n *Null) TokenLiteral() string {
 	return "null"
 }
-
-func (n *NullValue) valueNode() {}

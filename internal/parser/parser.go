@@ -2,8 +2,9 @@ package parser
 
 import (
 	"fmt"
-	"github.com/letsmakecakes/jsonparser/internal/lexer"
 	"strconv"
+
+	"github.com/orsinium-labs/testo/internal/lexer"
 )
 
 // Parser is responsible for parsing tokens into a structured format.
@@ -11,7 +12,6 @@ type Parser struct {
 	l         *lexer.Lexer
 	curToken  lexer.Token
 	peekToken lexer.Token
-	errors    []string
 }
 
 // New creates a new Parser instance.
@@ -34,13 +34,12 @@ func (p *Parser) Parse() (Node, error) {
 	if p.curToken.Type != lexer.LBRACE {
 		return nil, fmt.Errorf("expected '{', got %s at line %d, column %d", p.curToken.Type, p.curToken.Line, p.curToken.Column)
 	}
-
 	return p.parseObject()
 }
 
 // parseObject parses an object and returns an ObjectValue node.
-func (p *Parser) parseObject() (*ObjectValue, error) {
-	object := &ObjectValue{Pairs: make(map[string]Value)}
+func (p *Parser) parseObject() (*Object, error) {
+	object := &Object{Pairs: make(map[string]Node)}
 
 	p.nextToken()
 
@@ -94,10 +93,10 @@ func (p *Parser) parseKey() (string, error) {
 }
 
 // parseValue parses a value in an object or array and returns a Value node.
-func (p *Parser) parseValue() (Value, error) {
+func (p *Parser) parseValue() (Node, error) {
 	switch p.curToken.Type {
 	case lexer.STRING:
-		value := &StringValue{Value: p.curToken.Literal}
+		value := &String{Value: p.curToken.Literal}
 		p.nextToken()
 		return value, nil
 	case lexer.NUMBER:
@@ -106,19 +105,19 @@ func (p *Parser) parseValue() (Value, error) {
 		if err != nil {
 			return nil, fmt.Errorf("could not parse number: %v", err)
 		}
-		value := &NumberValue{Value: numValue}
+		value := &Number{numValue}
 		p.nextToken()
 		return value, nil
 	case lexer.TRUE:
-		value := &BooleanValue{Value: true}
+		value := &Boolean{true}
 		p.nextToken()
 		return value, nil
 	case lexer.FALSE:
-		value := &BooleanValue{Value: false}
+		value := &Boolean{false}
 		p.nextToken()
 		return value, nil
 	case lexer.NULL:
-		value := &NullValue{}
+		value := &Null{}
 		p.nextToken()
 		return value, nil
 	case lexer.LBRACE:
@@ -131,8 +130,8 @@ func (p *Parser) parseValue() (Value, error) {
 }
 
 // parseArray parses an array and returns an ArrayValue node.
-func (p *Parser) parseArray() (*ArrayValue, error) {
-	array := &ArrayValue{Elements: []Value{}}
+func (p *Parser) parseArray() (*Array, error) {
+	array := &Array{Elements: []Node{}}
 
 	p.nextToken()
 

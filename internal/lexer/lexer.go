@@ -164,7 +164,7 @@ func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
 }
 
-// isLetter checks if a character is a letter (a-z or A-Z).
+// isLetter checks if a character is an ASCII letter (a-z or A-Z).
 func isLetter(ch byte) bool {
 	return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z')
 }
