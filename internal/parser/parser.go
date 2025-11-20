@@ -8,6 +8,18 @@ import (
 	"github.com/orsinium-labs/valdo/valdo"
 )
 
+func Validate(given any, expected string) error {
+	validator, err := Parse(expected)
+	if err != nil {
+		return err
+	}
+	return validator.Validate(given)
+}
+
+func Parse(input string) (valdo.Validator, error) {
+	return New(lexer.New(input)).Parse()
+}
+
 // Parser is responsible for parsing tokens into a structured format.
 type Parser struct {
 	l         *lexer.Lexer

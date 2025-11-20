@@ -1,7 +1,9 @@
-package lexer
+package lexer_test
 
 import (
 	"testing"
+
+	"github.com/orsinium-labs/testo/internal/lexer"
 )
 
 func TestNextToken_EmptyInput(t *testing.T) {
@@ -10,14 +12,14 @@ func TestNextToken_EmptyInput(t *testing.T) {
 
 	// Expected token is EOF
 	tests := []struct {
-		expectedType    TokenType
+		expectedType    lexer.TokenType
 		expectedLiteral string
 	}{
-		{EOF, ""}, // End of input
+		{lexer.EOF, ""}, // End of input
 	}
 
 	// Initialize the lexer with the empty input
-	lexer := New(input)
+	lexer := lexer.New(input)
 
 	// Check for EOF token
 	tok := lexer.NextToken()
@@ -42,89 +44,89 @@ func TestNextToken_ValidCharacters(t *testing.T) {
 
 	// Define the expected sequence of tokens for these scenarios
 	tests := []struct {
-		expectedType    TokenType
+		expectedType    lexer.TokenType
 		expectedLiteral string
 	}{
-		{LBRACE, "{"},              // Start of object
-		{STRING, "name"},           // String key
-		{COLON, ":"},               // Colon separator
-		{STRING, "Alice"},          // String value
-		{COMMA, ","},               // Comma separator
-		{STRING, "age"},            // String key
-		{COLON, ":"},               // Colon separator
-		{NUMBER, "25"},             // Number
-		{COMMA, ","},               // Comma separator
-		{STRING, "isStudent"},      // String key
-		{COLON, ":"},               // Colon separator
-		{FALSE, "false"},           // Boolean value (false)
-		{COMMA, ","},               // Comma separator
-		{STRING, "courses"},        // String key
-		{COLON, ":"},               // Colon separator
-		{LBRACKET, "["},            // Start of array
-		{STRING, "Math"},           // String in array
-		{COMMA, ","},               // Comma separator
-		{STRING, "Science"},        // String in array
-		{COMMA, ","},               // Comma separator
-		{STRING, "History"},        // String in array
-		{RBRACKET, "]"},            // End of array
-		{COMMA, ","},               // Comma separator
-		{STRING, "address"},        // String key
-		{COLON, ":"},               // Colon separator
-		{LBRACE, "{"},              // Start of nested object
-		{STRING, "street"},         // String key
-		{COLON, ":"},               // Colon separator
-		{STRING, "123 Main St"},    // String value
-		{COMMA, ","},               // Comma separator
-		{STRING, "city"},           // String key
-		{COLON, ":"},               // Colon separator
-		{STRING, "Metropolis"},     // String value
-		{COMMA, ","},               // Comma separator
-		{STRING, "zipcode"},        // String key
-		{COLON, ":"},               // Colon separator
-		{STRING, "12345"},          // String value
-		{RBRACE, "}"},              // End of nested object
-		{COMMA, ","},               // Comma separator
-		{STRING, "graduationYear"}, // String key
-		{COLON, ":"},               // Colon separator
-		{NULL, "null"},             // Null value
-		{COMMA, ","},               // Comma separator
-		{STRING, "isGraduated"},    // String key
-		{COLON, ":"},               // Colon separator
-		{TRUE, "true"},             // Boolean value (true)
-		{COMMA, ","},               // Comma separator
-		{STRING, "height"},         // String key
-		{COLON, ":"},               // Colon separator
-		{NUMBER, "5.7"},            // Number value
-		{COMMA, ","},               // Comma separator
-		{STRING, "siblings"},       // String key
-		{COLON, ":"},               // Colon separator
-		{LBRACKET, "["},            // Start of nested array
-		{LBRACE, "{"},              // Start of inner object
-		{STRING, "name"},           // String key
-		{COLON, ":"},               // Colon separator
-		{STRING, "Bob"},            // String value
-		{COMMA, ","},               // Comma separator
-		{STRING, "age"},            // String key
-		{COLON, ":"},               // Colon separator
-		{NUMBER, "22"},             // Number value
-		{RBRACE, "}"},              // End of inner object
-		{COMMA, ","},               // Comma separator
-		{LBRACE, "{"},              // Start of another inner object
-		{STRING, "name"},           // String key
-		{COLON, ":"},               // Colon separator
-		{STRING, "Charlie"},        // String value
-		{COMMA, ","},               // Comma separator
-		{STRING, "age"},            // String key
-		{COLON, ":"},               // Colon separator
-		{NUMBER, "28"},             // Number value
-		{RBRACE, "}"},              // End of inner object
-		{RBRACKET, "]"},            // End of nested array
-		{RBRACE, "}"},              // End of main object
-		{EOF, ""},                  // End of input
+		{lexer.LBRACE, "{"},              // Start of object
+		{lexer.STRING, "name"},           // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.STRING, "Alice"},          // String value
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "age"},            // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.NUMBER, "25"},             // Number
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "isStudent"},      // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.FALSE, "false"},           // Boolean value (false)
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "courses"},        // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.LBRACKET, "["},            // Start of array
+		{lexer.STRING, "Math"},           // String in array
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "Science"},        // String in array
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "History"},        // String in array
+		{lexer.RBRACKET, "]"},            // End of array
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "address"},        // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.LBRACE, "{"},              // Start of nested object
+		{lexer.STRING, "street"},         // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.STRING, "123 Main St"},    // String value
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "city"},           // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.STRING, "Metropolis"},     // String value
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "zipcode"},        // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.STRING, "12345"},          // String value
+		{lexer.RBRACE, "}"},              // End of nested object
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "graduationYear"}, // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.NULL, "null"},             // Null value
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "isGraduated"},    // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.TRUE, "true"},             // Boolean value (true)
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "height"},         // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.NUMBER, "5.7"},            // Number value
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "siblings"},       // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.LBRACKET, "["},            // Start of nested array
+		{lexer.LBRACE, "{"},              // Start of inner object
+		{lexer.STRING, "name"},           // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.STRING, "Bob"},            // String value
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "age"},            // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.NUMBER, "22"},             // Number value
+		{lexer.RBRACE, "}"},              // End of inner object
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.LBRACE, "{"},              // Start of another inner object
+		{lexer.STRING, "name"},           // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.STRING, "Charlie"},        // String value
+		{lexer.COMMA, ","},               // Comma separator
+		{lexer.STRING, "age"},            // String key
+		{lexer.COLON, ":"},               // Colon separator
+		{lexer.NUMBER, "28"},             // Number value
+		{lexer.RBRACE, "}"},              // End of inner object
+		{lexer.RBRACKET, "]"},            // End of nested array
+		{lexer.RBRACE, "}"},              // End of main object
+		{lexer.EOF, ""},                  // End of input
 	}
 
 	// Initialize the lexer with the input
-	lexer := New(input)
+	lexer := lexer.New(input)
 
 	// Iterate over the expected tokens and compare with lexer output
 	for i, tt := range tests {
