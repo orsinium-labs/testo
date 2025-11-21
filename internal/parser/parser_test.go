@@ -45,6 +45,7 @@ func TestBadJson(t *testing.T) {
 	inputs := []string{
 		`True`,
 		`None`,
+		`hello`,
 		// `1.2.3`,
 		`!`,
 		`{`,
@@ -77,6 +78,10 @@ func TestValidateType_Ok(t *testing.T) {
 		{`13`, `integer`},
 		{`-13`, `integer`},
 
+		{`13`, `uint`},
+
+		{`3.14`, `float`},
+
 		{`"hi"`, `string`},
 		{`"hi"`, `str`},
 		{`""`, `string`},
@@ -88,6 +93,12 @@ func TestValidateType_Ok(t *testing.T) {
 		{`{}`, `object`},
 		{`{}`, `struct`},
 		{`{"hi": 123}`, `object`},
+
+		{`[1, -4]`, `ints`},
+		{`[1, 4]`, `uints`},
+		{`[3.14, 5.00]`, `floats`},
+		{`["hi"]`, `strings`},
+		{`[true, false]`, `bools`},
 
 		{`"sup"`, `any`},
 		{`123`, `any`},

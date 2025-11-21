@@ -146,6 +146,14 @@ func (p *Parser) parseValue() (valdo.Validator, error) {
 		value := valdo.Int()
 		p.nextToken()
 		return value, nil
+	case lexer.TYPE_UINT:
+		value := valdo.Int(valdo.Min(0))
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_FLOAT:
+		value := valdo.Float64()
+		p.nextToken()
+		return value, nil
 	case lexer.TYPE_BOOL:
 		value := valdo.Bool()
 		p.nextToken()
@@ -156,6 +164,30 @@ func (p *Parser) parseValue() (valdo.Validator, error) {
 		return value, nil
 	case lexer.TYPE_ARRAY:
 		value := valdo.Array(valdo.Any())
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_STRINGS:
+		value := valdo.Array(valdo.String())
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_INTS:
+		value := valdo.Array(valdo.Int())
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_UINTS:
+		value := valdo.Array(valdo.Int(valdo.Min(0)))
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_FLOATS:
+		value := valdo.Array(valdo.Float64())
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_BOOLS:
+		value := valdo.Array(valdo.Bool())
+		p.nextToken()
+		return value, nil
+	case lexer.TYPE_OBJECTS:
+		value := valdo.Array(valdo.Map(valdo.Any()))
 		p.nextToken()
 		return value, nil
 	default:

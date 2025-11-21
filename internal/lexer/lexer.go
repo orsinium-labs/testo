@@ -111,6 +111,7 @@ func (l *Lexer) readNumber() string {
 
 	for isDigit(l.ch) || (l.ch == '.' && !decimalSeen) {
 		if l.ch == '.' {
+			// TODO: detect dot appearing twice in the input.
 			decimalSeen = true
 		}
 		l.readChar()
@@ -184,12 +185,28 @@ func lookupKeyword(ident string) TokenType {
 		return TYPE_STRING
 	case "int", "integer":
 		return TYPE_INT
+	case "uint":
+		return TYPE_UINT
+	case "float", "float64", "number", "f64":
+		return TYPE_FLOAT
 	case "bool", "boolean":
 		return TYPE_BOOL
 	case "obj", "object", "struct", "map":
 		return TYPE_OBJECT
 	case "arr", "array", "slice", "list":
 		return TYPE_ARRAY
+	case "strings", "strs":
+		return TYPE_STRINGS
+	case "ints", "integers":
+		return TYPE_INTS
+	case "uints":
+		return TYPE_UINTS
+	case "floats", "numbers":
+		return TYPE_FLOATS
+	case "bools", "booleans":
+		return TYPE_BOOLS
+	case "objs", "objects", "structs", "maps":
+		return TYPE_OBJECTS
 	default:
 		return ILLEGAL
 	}
