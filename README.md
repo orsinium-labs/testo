@@ -1,8 +1,8 @@
 # testo
 
-Go testing fraework for matching JSON payloads against a pattern.
+Go testing framework for matching a JSON payload against a pattern.
 
-THe pattern is a subset of JSON with some additional keywords that is then converted into a [valdo](github.com/orsinium-labs/valdo) validator.
+The pattern is a subset of JSON with some additional keywords that is then converted into a [valdo](github.com/orsinium-labs/valdo) validator.
 
 ## Installation
 
