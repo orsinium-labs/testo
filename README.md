@@ -1,6 +1,8 @@
 # testo
 
-...
+Go testing fraework for matching JSON payloads against a pattern.
+
+THe pattern is a subset of JSON with some additional keywords that is then converted into a [valdo](github.com/orsinium-labs/valdo) validator.
 
 ## Installation
 
@@ -11,13 +13,13 @@ go get github.com/orsinium-labs/testo
 ## Usage
 
 ```go
-body := `{"name": "aragorn", "age": 87}`
-pattern := `{"name": "aragorn", "age": int}`
-err := testo.ValidateJSON(body, pattern)
-if err != nil {
-    t.Fatalf("invalid body: %v", err)
+func TestMyCoolAPI(t *testing.T) {
+    body := `{"name": "aragorn", "age": 87}`
+    testo.Assert(t, body, `{"name": "aragorn", "age": int}`)
 }
 ```
+
+The `body` can be bytes, string, or `io.Reader` (for example, an HTTP response body).
 
 ## Syntax
 
