@@ -39,10 +39,20 @@ func TestNextToken_EmptyInput(t *testing.T) {
 }
 
 func TestNextToken_ValidCharacters(t *testing.T) {
-	// Define the input string with various edge cases and scenarios
-	input := `{"name":"Alice","age":25,"isStudent":false,"courses":["Math","Science","History"],"address":{"street":"123 Main St","city":"Metropolis","zipcode":"12345"},"graduationYear":null,"isGraduated":true,"height":5.7,"siblings":[{"name":"Bob","age":22},{"name":"Charlie","age":28}]}`
+	input := `
+		{
+			"name":"Alice",
+			"age":25,
+			"isStudent":false,
+			"courses":["Math","Science","History"],
+			"address":{"street":"123 Main St","city":"Metropolis","zipcode":"12345"},
+			"graduationYear":null,
+			"isGraduated":true,
+			"height":5.7,
+			"siblings":[{"name":"Bob","age":22},{"name":"Charlie","age":28}]
+		}
+	`
 
-	// Define the expected sequence of tokens for these scenarios
 	tests := []struct {
 		expectedType    lexer.TokenType
 		expectedLiteral string

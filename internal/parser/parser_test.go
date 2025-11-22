@@ -46,7 +46,7 @@ func TestBadJson(t *testing.T) {
 		`True`,
 		`None`,
 		`hello`,
-		// `1.2.3`,
+		`1.2.3`,
 		`!`,
 		`{`,
 		`[`,

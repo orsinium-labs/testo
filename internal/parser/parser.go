@@ -44,7 +44,15 @@ func (p *Parser) nextToken() {
 
 // Parse parses the input starting from the root and returns the root valdo.Validator.
 func (p *Parser) Parse() (valdo.Validator, error) {
-	return p.parseValue()
+	validator, err := p.parseValue()
+	if err != nil {
+		return nil, err
+	}
+	p.nextToken()
+	if p.curToken.Type != lexer.EOF {
+		return nil, fmt.Errorf("expected EOF, found, %s", p.curToken.Type)
+	}
+	return validator, nil
 }
 
 // parseObject parses an object and returns an ObjectValue node.

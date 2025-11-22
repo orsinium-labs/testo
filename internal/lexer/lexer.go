@@ -111,7 +111,6 @@ func (l *Lexer) readNumber() string {
 
 	for isDigit(l.ch) || (l.ch == '.' && !decimalSeen) {
 		if l.ch == '.' {
-			// TODO: detect dot appearing twice in the input.
 			decimalSeen = true
 		}
 		l.readChar()
