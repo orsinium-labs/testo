@@ -93,6 +93,7 @@ func TestValidateType_Ok(t *testing.T) {
 		{`{}`, `object`},
 		{`{}`, `struct`},
 		{`{"hi": 123}`, `object`},
+		{`{"hi": 123}`, `{"^.+$": any}`},
 
 		{`[1, -4]`, `ints`},
 		{`[1, 4]`, `uints`},
